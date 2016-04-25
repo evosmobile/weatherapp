@@ -12,7 +12,7 @@ import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullForecastRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
-import sky.skyweatherapp.presenters.MainView;
+import sky.skyweatherapp.presenters.MainScreenView;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -25,7 +25,7 @@ public class MainScreenPresenterTest {
     @Test
     public void givenADataModelIsProvided_thePresenterSetsUpTheScreenAsExpected() {
 
-        CapturingMainView capturingMainView = new CapturingMainView();
+        CapturingMainScreenView capturingMainView = new CapturingMainScreenView();
 
         CannedFavouriteCities cannedFavouriteCities = new CannedFavouriteCities();
         DataModel model = new DataModel(null, cannedFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
@@ -37,7 +37,7 @@ public class MainScreenPresenterTest {
 
     @Test
     public void givenADataModelIsProvidedWithNoFavourites_ThenViewIsInstructedToDisplayTheNoFavouritesMessage() {
-        CapturingMainView capturingMainView = new CapturingMainView();
+        CapturingMainScreenView capturingMainView = new CapturingMainScreenView();
 
         EmptyFavouriteCities emptyFavouriteCities = new EmptyFavouriteCities();
         DataModel model = new DataModel(null, emptyFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
@@ -49,7 +49,7 @@ public class MainScreenPresenterTest {
     }
 
 
-    private class CapturingMainView implements MainView {
+    private class CapturingMainScreenView implements MainScreenView {
         public List<CityData> capturedCities = new ArrayList<>();
         public boolean capturedNoDataMessageDisplayed = false;
 

@@ -54,6 +54,16 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         Toast.makeText(this, "No cities selected", Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void setPresenterCallback(PresenterCallback presenterCallback) {
+
+    }
+
+    @Override
+    public void setCitySearchResults(List<CityData> cityData) {
+
+    }
+
     private class SharedPreferencesFavouritesRetriever implements FavouriteCitiesRetriever {
         private List<CityData> favourites = new ArrayList<>();
 

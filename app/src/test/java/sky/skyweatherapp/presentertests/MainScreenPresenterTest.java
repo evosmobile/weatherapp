@@ -7,9 +7,12 @@ import java.util.List;
 
 import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.datamodel.JSONCityDataParser;
+import sky.skyweatherapp.datatests.TestData;
 import sky.skyweatherapp.helpers.CannedFavouriteCities;
 import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
+import sky.skyweatherapp.helpers.NullFavouriteCitiesRetriever;
 import sky.skyweatherapp.helpers.NullForecastRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
 import sky.skyweatherapp.view.MainScreenView;
@@ -48,10 +51,26 @@ public class MainScreenPresenterTest {
 
     }
 
+    @Test
+    public void whenACitySearchHasBeenPerformed_thePresenterIsNotified_andSetsTheListOfMatchesTheView() {
+
+        CapturingMainScreenView capturingMainScreenView = new CapturingMainScreenView();
+        DataModel model = new DataModel(null, new NullFavouriteCitiesRetriever(),new JSONCityDataParser(),new NullForecastRetriever());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingMainScreenView, model);
+
+        capturingMainScreenView.capturedCallback.cityDataRetrieved(TestData.sampleCityData);
+
+        assertThat(capturingMainScreenView.capturedMatchedCities.size(), is(4));
+
+    }
+
 
     private class CapturingMainScreenView implements MainScreenView {
         public List<CityData> capturedCities = new ArrayList<>();
         public boolean capturedNoDataMessageDisplayed = false;
+        public PresenterCallback capturedCallback = null;
+        public List<CityData> capturedMatchedCities = new ArrayList<>();
 
         @Override
         public void setFavourites(List<CityData> cityData) {
@@ -62,6 +81,17 @@ public class MainScreenPresenterTest {
         public void displayNoDataMessage() {
             capturedNoDataMessageDisplayed = true;
         }
+
+        @Override
+        public void setPresenterCallback(PresenterCallback presenterCallback) {
+            capturedCallback = presenterCallback;
+        }
+
+        @Override
+        public void setCitySearchResults(List<CityData> cityData) {
+            capturedMatchedCities = cityData;
+        }
+
     }
 
 }

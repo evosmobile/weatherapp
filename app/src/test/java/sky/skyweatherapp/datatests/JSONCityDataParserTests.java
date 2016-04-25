@@ -1,4 +1,4 @@
-package sky.skyweatherapp;
+package sky.skyweatherapp.datatests;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class JSONCityDataParserTests {
 
         CityDataParser cityDataParser = new JSONCityDataParser();
 
-        model = new DataModel(null, cityDataParser, new NullForecastRetriever());
+        model = new DataModel(null, null, cityDataParser, new NullForecastRetriever());
         cityResults = model.parseCitySearchResponse(TestData.sampleCityData);
     }
 

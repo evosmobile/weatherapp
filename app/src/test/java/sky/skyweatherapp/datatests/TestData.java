@@ -1,4 +1,4 @@
-package sky.skyweatherapp;
+package sky.skyweatherapp.datatests;
 
 /**
  * Created by S on 25/04/2016.

@@ -1,4 +1,4 @@
-package sky.skyweatherapp;
+package sky.skyweatherapp.datatests;
 
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class ModelForecastRequestTests {
 
         StubForecastRetriever stubForecastRetriever = new StubForecastRetriever();
 
-        DataModel model = new DataModel(testKey, new NullCityDataParser(), stubForecastRetriever);
+        DataModel model = new DataModel(testKey, null, new NullCityDataParser(), stubForecastRetriever);
 
         model.retrieveForecast(2643123L);
 

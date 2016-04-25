@@ -13,10 +13,17 @@ import java.util.List;
 public class DataModel {
 
 
+    private final String apiKey;
     private final CityDataParser cityDataParser;
+    private final ForecastRetriever forecastRetriever;
 
-    public DataModel(CityDataParser cityDataParser) {
+    private final String API_ForecastRetrieve = "http://api.openweathermap.org/data/2.5/forecast?id=%d&appid=%s";
+
+
+    public DataModel(String apiKey, CityDataParser cityDataParser, ForecastRetriever forecastRetriever) {
+        this.apiKey = apiKey;
         this.cityDataParser = cityDataParser;
+        this.forecastRetriever = forecastRetriever;
     }
 
 
@@ -25,6 +32,10 @@ public class DataModel {
     }
 
     public void retrieveForecast(long cityId) {
+
+        String retrieveUrl = String.format(API_ForecastRetrieve, cityId, apiKey);
+
+        String response = forecastRetriever.retrieve(retrieveUrl);
 
     }
 }

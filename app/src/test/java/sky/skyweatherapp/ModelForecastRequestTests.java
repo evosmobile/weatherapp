@@ -21,22 +21,25 @@ public class ModelForecastRequestTests {
 
         String testKey = "1234567890";
 
-        CapturingForecastRetriever capturingForecastRetriever = new CapturingForecastRetriever();
+        StubForecastRetriever stubForecastRetriever = new StubForecastRetriever();
 
-        DataModel model = new DataModel(new NullCityDataParser());
+        DataModel model = new DataModel(testKey, new NullCityDataParser(), stubForecastRetriever);
 
         model.retrieveForecast(2643123L);
 
         String expectedUrl = "http://api.openweathermap.org/data/2.5/forecast?id=2643123&appid=" + testKey;
 
-        assertThat(capturingForecastRetriever.capturedUrl, is(expectedUrl));
+        assertThat(stubForecastRetriever.capturedUrl, is(expectedUrl));
 
     }
 
-    private class CapturingForecastRetriever implements ForecastRetriever {
+    private class StubForecastRetriever implements ForecastRetriever {
         public String capturedUrl;
 
-
-
+        @Override
+        public String retrieve(String url) {
+            capturedUrl = url;
+            return null;
+        }
     }
 }

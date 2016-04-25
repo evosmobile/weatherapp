@@ -10,6 +10,7 @@ import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.CityDataParser;
 import sky.skyweatherapp.datamodel.DataModel;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
+import sky.skyweatherapp.helpers.NullForecastRetriever;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +28,7 @@ public class JSONCityDataParserTests {
 
         CityDataParser cityDataParser = new JSONCityDataParser();
 
-        model = new DataModel(cityDataParser);
+        model = new DataModel(null, cityDataParser, new NullForecastRetriever());
         cityResults = model.parseCitySearchResponse(TestData.sampleCityData);
     }
 

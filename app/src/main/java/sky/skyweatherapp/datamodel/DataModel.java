@@ -23,4 +23,8 @@ public class DataModel {
     public List<CityData> parseCitySearchResponse(String cityData) throws Exception {
         return cityDataParser.parseCitySearchResponse(cityData);
     }
+
+    public void retrieveForecast(long cityId) {
+
+    }
 }

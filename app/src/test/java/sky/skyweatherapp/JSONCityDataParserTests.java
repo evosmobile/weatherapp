@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Created by S on 25/04/2016.
  */
-public class JSONDataParserTests {
+public class JSONCityDataParserTests {
 
     private DataModel model;
     private List<CityData> cityResults;
@@ -39,7 +39,6 @@ public class JSONDataParserTests {
 
     @Test
     public void givenAJsonResponseTheModelIsPopulatedWithTheCorrectData() throws JSONException {
-
 
         CityData first = cityResults.get(0);
         CityData second = cityResults.get(1);

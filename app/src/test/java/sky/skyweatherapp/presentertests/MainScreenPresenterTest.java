@@ -29,7 +29,6 @@ public class MainScreenPresenterTest {
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
 
-
         assertThat(capturingMainView.capturedCities.size(), is(3));
     }
 
@@ -38,15 +37,20 @@ public class MainScreenPresenterTest {
 
     private class CapturingMainView implements MainView {
         public List<CityData> capturedCities = new ArrayList<>();
+
+        @Override
+        public void setFavourites(List<CityData> cityData) {
+            capturedCities = cityData;
+        }
     }
 
     interface MainView {
-
+        void setFavourites(List<CityData> cityData);
     }
 
     private class MainScreenPresenter {
         public MainScreenPresenter(MainView mainView, DataModel model) {
-
+            mainView.setFavourites(model.retrieveFavourites());
         }
     }
 }

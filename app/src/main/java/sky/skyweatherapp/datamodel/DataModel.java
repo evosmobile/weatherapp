@@ -41,4 +41,8 @@ public class DataModel {
         String response = forecastRetriever.retrieve(retrieveUrl);
 
     }
+
+    public List<CityData> retrieveFavourites() {
+        return favouriteCitiesRetriever.retrieveFavourites();
+    }
 }

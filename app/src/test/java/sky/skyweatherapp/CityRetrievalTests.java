@@ -54,10 +54,10 @@ public class CityRetrievalTests {
             JSONArray cities = json.getJSONArray("list");
 
             for (int i=0;i<cities.length();i++) {
-
-                long id  = cities.getJSONObject(i).getLong("id");
-                String name = cities.getJSONObject(i).getString("name");
-                String country = cities.getJSONObject(i).getJSONObject("sys").getString("country");
+                final JSONObject cityObject = cities.getJSONObject(i);
+                long id  = cityObject.getLong("id");
+                String name = cityObject.getString("name");
+                String country = cityObject.getJSONObject("sys").getString("country");
 
                 returnValue.add(new CityData(id,name,country));
             }

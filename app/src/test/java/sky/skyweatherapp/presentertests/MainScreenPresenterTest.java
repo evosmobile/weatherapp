@@ -11,6 +11,8 @@ import sky.skyweatherapp.helpers.CannedFavouriteCities;
 import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullForecastRetriever;
+import sky.skyweatherapp.presenters.MainScreenPresenter;
+import sky.skyweatherapp.presenters.MainView;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -44,7 +46,6 @@ public class MainScreenPresenterTest {
 
         assertThat(capturingMainView.capturedNoDataMessageDisplayed, is(true));
 
-
     }
 
 
@@ -63,21 +64,4 @@ public class MainScreenPresenterTest {
         }
     }
 
-    interface MainView {
-        void setFavourites(List<CityData> cityData);
-
-        void displayNoDataMessage();
-    }
-
-    private class MainScreenPresenter {
-        public MainScreenPresenter(MainView mainView, DataModel model) {
-            List<CityData> favouriteCities = model.retrieveFavourites();
-
-            if (favouriteCities.size() == 0) {
-                mainView.displayNoDataMessage();
-            } else {
-                mainView.setFavourites(favouriteCities);
-            }
-        }
-    }
 }

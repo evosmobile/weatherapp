@@ -18,13 +18,9 @@ public class CityRetrievalTests {
 
     @Test
     public void givenAJsonResponseTheModelIdentifiesTheCorrectNumberOfCities() throws JSONException {
-
         DataModel model = new DataModel();
-
         List<CityData> cityResults = model.parseCitySearchResponse(TestData.sampleCityData);
-
         assertThat(cityResults.size(), is(4));
-
     }
 
     @Test
@@ -40,6 +36,10 @@ public class CityRetrievalTests {
         assertThat(first.getId(), is(5089178L));
         assertThat(first.getName(), is("Manchester"));
         assertThat(first.getCountry(), is("US"));
+
+        assertThat(second.getId(), is(2643123L));
+        assertThat(second.getName(), is("Manchester"));
+        assertThat(second.getCountry(), is("GB"));
 
     }
 

@@ -12,7 +12,7 @@ import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullForecastRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
-import sky.skyweatherapp.presenters.MainScreenView;
+import sky.skyweatherapp.view.MainScreenView;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

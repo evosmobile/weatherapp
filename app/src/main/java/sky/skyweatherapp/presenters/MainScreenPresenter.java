@@ -4,6 +4,7 @@ import java.util.List;
 
 import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.view.MainScreenView;
 
 /**
  * Created by S on 25/04/2016.

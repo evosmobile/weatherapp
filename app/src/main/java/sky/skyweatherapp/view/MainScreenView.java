@@ -1,4 +1,4 @@
-package sky.skyweatherapp.presenters;
+package sky.skyweatherapp.view;
 
 import java.util.List;
 

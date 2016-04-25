@@ -8,6 +8,7 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.DataModel;
 import sky.skyweatherapp.helpers.CannedFavouriteCities;
+import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullForecastRetriever;
 
@@ -24,7 +25,7 @@ public class MainScreenPresenterTest {
 
         CapturingMainView capturingMainView = new CapturingMainView();
 
-        CannedFavouriteCities cannedFavouriteCities= new CannedFavouriteCities();
+        CannedFavouriteCities cannedFavouriteCities = new CannedFavouriteCities();
         DataModel model = new DataModel(null, cannedFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
@@ -32,25 +33,51 @@ public class MainScreenPresenterTest {
         assertThat(capturingMainView.capturedCities.size(), is(3));
     }
 
+    @Test
+    public void givenADataModelIsProvidedWithNoFavourites_ThenViewIsInstructedToDisplayTheNoFavouritesMessage() {
+        CapturingMainView capturingMainView = new CapturingMainView();
 
+        EmptyFavouriteCities emptyFavouriteCities = new EmptyFavouriteCities();
+        DataModel model = new DataModel(null, emptyFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
+
+        assertThat(capturingMainView.capturedNoDataMessageDisplayed, is(true));
+
+
+    }
 
 
     private class CapturingMainView implements MainView {
         public List<CityData> capturedCities = new ArrayList<>();
+        public boolean capturedNoDataMessageDisplayed = false;
 
         @Override
         public void setFavourites(List<CityData> cityData) {
             capturedCities = cityData;
         }
+
+        @Override
+        public void displayNoDataMessage() {
+            capturedNoDataMessageDisplayed = true;
+        }
     }
 
     interface MainView {
         void setFavourites(List<CityData> cityData);
+
+        void displayNoDataMessage();
     }
 
     private class MainScreenPresenter {
         public MainScreenPresenter(MainView mainView, DataModel model) {
-            mainView.setFavourites(model.retrieveFavourites());
+            List<CityData> favouriteCities = model.retrieveFavourites();
+
+            if (favouriteCities.size() == 0) {
+                mainView.displayNoDataMessage();
+            } else {
+                mainView.setFavourites(favouriteCities);
+            }
         }
     }
 }

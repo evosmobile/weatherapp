@@ -113,8 +113,6 @@ public class MainScreenPresenterTest {
         CapturingFavouriteCitiesRetriever favouriteCitiesRetriever = new CapturingFavouriteCitiesRetriever();
         DataModel model = new DataModel(null, favouriteCitiesRetriever, new NullCityDataParser(), new NullForecastRetriever());
 
-
-
         MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
 
         CityData cityData = new CityData(1,"City", "Country");

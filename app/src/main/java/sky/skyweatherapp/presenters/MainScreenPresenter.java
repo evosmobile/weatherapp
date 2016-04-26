@@ -20,7 +20,6 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
         this.mainScreenView = mainScreenView;
         this.model = model;
 
-
         mainScreenView.setPresenterCallback(this);
 
         model.retrieveFavourites();
@@ -52,5 +51,6 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     @Override
     public void deleteFavourite(CityData cityData) {
         model.deleteFavourite(cityData);
+        mainScreenView.setFavourites(model.getFavourites());
     }
 }

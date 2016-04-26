@@ -4,7 +4,10 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
     private NewFavouriteFragment newFavouriteFragment;
     private RecyclerView favouritesList;
     private FavouritesListAdapter favouritesListAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +131,11 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         }
     }
 
-    private class FavouritesViewHolder extends RecyclerView.ViewHolder  {
+    private class FavouritesViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
 
         private final TextView city;
         private final TextView country;
+        private CityData cityData;
 
         public FavouritesViewHolder(View itemView) {
             super(itemView);
@@ -138,14 +143,35 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
             city = (TextView) itemView.findViewById(R.id.favouritesitem_city);
             country = (TextView) itemView.findViewById(R.id.favouritesitem_country);
 
+            itemView.setOnLongClickListener(this);
         }
 
         public void setData(CityData cityData) {
+            this.cityData = cityData;
             city.setText(cityData.getName());
             country.setText(cityData.getCountry());
         }
 
 
+        @Override
+        public boolean onLongClick(View v) {
+            PopupMenu menu = new PopupMenu(MainScreenActivity.this,v);
+            MenuInflater inflater = menu.getMenuInflater();
+            inflater.inflate(R.menu.favourites_popup, menu.getMenu());
+            menu.setOnMenuItemClickListener(this);
+            menu.show();
 
+            return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+
+            if (item.getItemId() == R.id.menu_delete) {
+                MainScreenActivity.this.getPresenterCallback().deleteFavourite(cityData);
+            }
+
+            return false;
+        }
     }
 }

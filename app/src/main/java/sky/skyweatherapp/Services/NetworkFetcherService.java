@@ -53,7 +53,7 @@ public class NetworkFetcherService extends IntentService {
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle(getString(R.string.downloading));
         builder.setContentText(message);
-        builder.setSmallIcon(R.drawable.ic_autorenew_black_24dp);
+        builder.setSmallIcon(android.R.drawable.ic_dialog_map);
         builder.setProgress(0,0,true);
 
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -64,9 +64,11 @@ public class NetworkFetcherService extends IntentService {
         try {
             URL downloadUrl = new URL(url);
             response = IOUtils.toString(downloadUrl.openStream());
+
         } catch (Exception e) {
             Log.e(TAG, "onHandleIntent: " + e.toString() );
         } finally {
+
             manager.cancel(NOTIFICATION_ID);
             if (callback!=null) {
                 callback.complete(response);

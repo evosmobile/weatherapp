@@ -11,12 +11,21 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 import sky.skyweatherapp.R;
+import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.services.NetworkFetcherService;
 
 /**
@@ -40,6 +49,14 @@ public class NewFavouriteFragment extends DialogFragment implements View.OnClick
 
         }
     };
+    private RecyclerView citiesList;
+    private EditText searchCriteria;
+
+
+    public void setCountriesListData(List<CityData> cityData) {
+        CitiesAdapter citiesAdapter = new CitiesAdapter(cityData);
+        citiesList.setAdapter(citiesAdapter);
+    }
 
     @NonNull
     @Override
@@ -52,6 +69,9 @@ public class NewFavouriteFragment extends DialogFragment implements View.OnClick
 
         inflatedView.findViewById(R.id.newfavourite_search).setOnClickListener(this);
 
+        searchCriteria = (EditText)inflatedView.findViewById(R.id.newfavourite_cityname);
+        citiesList = (RecyclerView)inflatedView.findViewById(R.id.newfavourite_list);
+        citiesList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         builder.setView(inflatedView)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -77,7 +97,7 @@ public class NewFavouriteFragment extends DialogFragment implements View.OnClick
     @Override
     public void onClick(View v) {
 
-        String cityName = ((EditText)inflatedView.findViewById(R.id.newfavourite_cityname)).getText().toString();
+        String cityName = searchCriteria.getText().toString();
         String url = String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=cf9d82cc9699db27242567f0cefbfce5&mode=json",cityName);
 
         Intent i = new Intent(getContext(),NetworkFetcherService.class);
@@ -90,7 +110,59 @@ public class NewFavouriteFragment extends DialogFragment implements View.OnClick
     }
 
     @Override
-    public void complete(String response) {
-        Toast.makeText(getContext(), response,Toast.LENGTH_LONG).show();
+    public void complete(final String response) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+                mainScreenActivity.getPresenterCallback().cityDataRetrieved(response);
+            }
+        });
+
+    }
+
+    private class CitiesAdapter extends RecyclerView.Adapter {
+        private final List<CityData> cityData;
+
+        public CitiesAdapter(List<CityData> cityData) {
+            this.cityData = cityData;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = getLayoutInflater(null).inflate(R.layout.country_list_item,parent,false);
+            return new CitiesListItem(v);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            CitiesListItem item = (CitiesListItem)holder;
+            item.setData(cityData.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return cityData.size();
+        }
+    }
+
+    private class CitiesListItem extends RecyclerView.ViewHolder {
+
+        TextView city;
+        TextView country;
+
+        public CitiesListItem(View itemView) {
+            super(itemView);
+
+            city = (TextView)itemView.findViewById(R.id.cityitemholder_city);
+            country = (TextView)itemView.findViewById(R.id.cityitemholder_country);
+
+        }
+
+        public void setData(CityData cityData) {
+            city.setText(cityData.getName());
+            country.setText(cityData.getCountry());
+        }
     }
 }

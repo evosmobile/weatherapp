@@ -19,6 +19,9 @@ import sky.skyweatherapp.presenters.MainScreenPresenter;
 
 public class MainScreenActivity extends FragmentActivity implements MainScreenView {
 
+    private PresenterCallback presenterCallback = null;
+    private NewFavouriteFragment newFavouriteFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +38,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
             @Override
             public void onClick(View v) {
 
-                NewFavouriteFragment newFavouriteFragment = new NewFavouriteFragment();
+                newFavouriteFragment = new NewFavouriteFragment();
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -56,12 +59,22 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     @Override
     public void setPresenterCallback(PresenterCallback presenterCallback) {
-
+        this.presenterCallback = presenterCallback;
     }
 
     @Override
-    public void setCitySearchResults(List<CityData> cityData) {
+    public void setCitySearchResults(final List<CityData> cityData) {
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+                newFavouriteFragment.setCountriesListData(cityData);
+//            }
+//        });
 
+    }
+
+    public PresenterCallback getPresenterCallback() {
+        return presenterCallback;
     }
 
     private class SharedPreferencesFavouritesRetriever implements FavouriteCitiesRetriever {

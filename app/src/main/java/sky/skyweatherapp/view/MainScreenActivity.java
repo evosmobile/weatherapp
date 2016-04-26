@@ -3,7 +3,11 @@ package sky.skyweatherapp.view;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +25,8 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     private PresenterCallback presenterCallback = null;
     private NewFavouriteFragment newFavouriteFragment;
+    private RecyclerView favouritesList;
+    private FavouritesListAdapter favouritesListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +48,21 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
                 newFavouriteFragment.show(fragmentManager, null);
             }
         });
+
+        favouritesList = (RecyclerView) findViewById(R.id.main_favouritesList);
+        favouritesList.setLayoutManager(new LinearLayoutManager(this));
+
+        favouritesListAdapter = new FavouritesListAdapter();
+
+        favouritesList.setAdapter(favouritesListAdapter);
+
     }
 
     @Override
     public void setFavourites(List<CityData> cityData) {
+
+        favouritesListAdapter.setCityData(cityData);
+        favouritesListAdapter.notifyDataSetChanged();
 
     }
 
@@ -86,6 +103,56 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         @Override
         public String retrieve(String url) {
             return null;
+        }
+    }
+
+    private class FavouritesListAdapter extends RecyclerView.Adapter {
+
+        List<CityData> cityData = new ArrayList<>();
+
+
+        public void setCityData(List<CityData> cityData) {
+            this.cityData = cityData;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View v = getLayoutInflater().inflate(R.layout.favourites_list_item, null);
+
+            return new FavouritesViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+            FavouritesViewHolder viewHolder = (FavouritesViewHolder) holder;
+            viewHolder.setData(cityData.get(position));
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return cityData.size();
+        }
+    }
+
+    private class FavouritesViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView city;
+        private final TextView country;
+
+        public FavouritesViewHolder(View itemView) {
+            super(itemView);
+
+            city = (TextView) itemView.findViewById(R.id.favouritesitem_city);
+            country = (TextView) itemView.findViewById(R.id.favouritesitem_country);
+
+        }
+
+        public void setData(CityData cityData) {
+            city.setText(cityData.getName());
+            country.setText(cityData.getCountry());
         }
     }
 }

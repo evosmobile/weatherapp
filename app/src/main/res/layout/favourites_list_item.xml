@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/favouritesitem_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        tools:text="City" />
+
+    <TextView
+        android:id="@+id/favouritesitem_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Country" />
+
+</LinearLayout>

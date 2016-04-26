@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,8 +60,6 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
     };
 
     public void setCountriesListData(List<CityData> cityData) {
-
-        int x=0;
         citiesAdapter.setData(cityData);
         citiesAdapter.notifyDataSetChanged();
     }

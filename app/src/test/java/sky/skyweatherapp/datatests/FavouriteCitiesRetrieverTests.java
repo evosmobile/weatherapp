@@ -1,9 +1,9 @@
-package sky.skyweatherapp;
+package sky.skyweatherapp.datatests;
 
 import org.junit.Test;
 
 import sky.skyweatherapp.datamodel.CityData;
-import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.helpers.CapturingFavouriteCitiesRetriever;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -19,7 +19,7 @@ public class FavouriteCitiesRetrieverTests {
 
         CapturingFavouriteCitiesRetriever capturingFavouriteCitiesRetriever = new CapturingFavouriteCitiesRetriever();
 
-        DataModel model = new DataModel(null, capturingFavouriteCitiesRetriever, null, null);
+        MainScreenDataModel model = new MainScreenDataModel(null, capturingFavouriteCitiesRetriever, null, null);
 
         model.addFavourite(new CityData(1,"Name","Country"));
 

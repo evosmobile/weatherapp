@@ -1,5 +1,6 @@
 package sky.skyweatherapp.view;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +9,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,8 +19,8 @@ import java.util.List;
 
 import sky.skyweatherapp.R;
 import sky.skyweatherapp.datamodel.CityData;
-import sky.skyweatherapp.datamodel.DataModel;
-import sky.skyweatherapp.datamodel.ForecastRetriever;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
+import sky.skyweatherapp.datamodel.CurrentWeatherRetriever;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
 import sky.skyweatherapp.helpers.SharedPreferencesFavouritesRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
@@ -47,7 +47,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         favouritesList.setAdapter(favouritesListAdapter);
 
 
-        DataModel model = new DataModel(apiKey, new SharedPreferencesFavouritesRetriever(this), new JSONCityDataParser(), new JSONForecastRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(apiKey, new SharedPreferencesFavouritesRetriever(this), new JSONCityDataParser(), new JSONCurrentWeatherRetriever());
 
         MainScreenPresenter mainScreenPresenter = new MainScreenPresenter(this, model);
 
@@ -93,7 +93,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         return presenterCallback;
     }
 
-    private class JSONForecastRetriever implements ForecastRetriever {
+    private class JSONCurrentWeatherRetriever implements CurrentWeatherRetriever {
         @Override
         public String retrieve(String url) {
             return null;
@@ -131,7 +131,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         }
     }
 
-    private class FavouritesViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
+    private class FavouritesViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
         private final TextView city;
         private final TextView country;
@@ -144,6 +144,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
             country = (TextView) itemView.findViewById(R.id.favouritesitem_country);
 
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         public void setData(CityData cityData) {
@@ -172,6 +173,18 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
             }
 
             return false;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            Intent i = new Intent(MainScreenActivity.this, ForecastActivity.class);
+            i.putExtra("id", cityData.getId());
+            i.putExtra("name", cityData.getName());
+            i.putExtra("country", cityData.getCountry());
+
+            startActivity(i);
+
         }
     }
 }

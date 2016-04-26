@@ -2,8 +2,8 @@ package sky.skyweatherapp.datatests;
 
 import org.junit.Test;
 
-import sky.skyweatherapp.datamodel.DataModel;
-import sky.skyweatherapp.datamodel.ForecastRetriever;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
+import sky.skyweatherapp.datamodel.CurrentWeatherRetriever;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -21,9 +21,9 @@ public class ModelForecastRequestTests {
 
         String testKey = "1234567890";
 
-        StubForecastRetriever stubForecastRetriever = new StubForecastRetriever();
+        StubCurrentWeatherRetriever stubForecastRetriever = new StubCurrentWeatherRetriever();
 
-        DataModel model = new DataModel(testKey, null, new NullCityDataParser(), stubForecastRetriever);
+        MainScreenDataModel model = new MainScreenDataModel(testKey, null, new NullCityDataParser(), stubForecastRetriever);
 
         model.retrieveForecast(2643123L);
 
@@ -33,7 +33,7 @@ public class ModelForecastRequestTests {
 
     }
 
-    private class StubForecastRetriever implements ForecastRetriever {
+    private class StubCurrentWeatherRetriever implements CurrentWeatherRetriever {
         public String capturedUrl;
 
         @Override

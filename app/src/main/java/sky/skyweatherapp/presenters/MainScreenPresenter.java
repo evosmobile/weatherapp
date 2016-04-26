@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.List;
 
 import sky.skyweatherapp.datamodel.CityData;
-import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.view.MainScreenView;
 
 /**
@@ -13,10 +13,10 @@ import sky.skyweatherapp.view.MainScreenView;
  */
 public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     private final MainScreenView mainScreenView;
-    private final DataModel model;
+    private final MainScreenDataModel model;
     private String TAG = "MainScreenPresenter";
 
-    public MainScreenPresenter(MainScreenView mainScreenView, DataModel model) {
+    public MainScreenPresenter(MainScreenView mainScreenView, MainScreenDataModel model) {
         this.mainScreenView = mainScreenView;
         this.model = model;
 

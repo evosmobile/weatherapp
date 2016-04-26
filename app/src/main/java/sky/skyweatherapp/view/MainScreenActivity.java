@@ -60,7 +60,6 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     @Override
     public void setFavourites(List<CityData> cityData) {
-
         favouritesListAdapter.setCityData(cityData);
         favouritesListAdapter.notifyDataSetChanged();
 
@@ -96,6 +95,11 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         @Override
         public List<CityData> retrieveFavourites() {
             return favourites;
+        }
+
+        @Override
+        public void saveFavourites(List<CityData> favourites) {
+
         }
     }
 

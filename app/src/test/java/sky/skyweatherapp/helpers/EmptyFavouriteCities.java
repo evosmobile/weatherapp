@@ -13,4 +13,9 @@ public class EmptyFavouriteCities implements FavouriteCitiesRetriever{
     public List<CityData> retrieveFavourites() {
         return new ArrayList<>();
     }
+
+    @Override
+    public void saveFavourites(List<CityData> favourites) {
+
+    }
 }

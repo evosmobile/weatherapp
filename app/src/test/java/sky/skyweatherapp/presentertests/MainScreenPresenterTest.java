@@ -78,10 +78,10 @@ public class MainScreenPresenterTest {
 
         capturingInvokableMainScreenView.invokeCitySelectedCallback(expectedData);
 
-        assertThat(model.favourites.size(), is(1));
-        assertThat(model.favourites.get(0).getId(),is(1234L));
-        assertThat(model.favourites.get(0).getName(),is("CityName"));
-        assertThat(model.favourites.get(0).getCountry(),is("Country"));
+        assertThat(model.getFavourites().size(), is(1));
+        assertThat(model.getFavourites().get(0).getId(),is(1234L));
+        assertThat(model.getFavourites().get(0).getName(),is("CityName"));
+        assertThat(model.getFavourites().get(0).getCountry(),is("Country"));
     }
 
 

@@ -9,4 +9,6 @@ import sky.skyweatherapp.datamodel.CityData;
  */
 public interface FavouriteCitiesRetriever {
     List<CityData> retrieveFavourites();
+
+    void saveFavourites(List<CityData> favourites);
 }

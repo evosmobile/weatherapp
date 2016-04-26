@@ -21,4 +21,9 @@ public class CannedFavouriteCities implements FavouriteCitiesRetriever{
 
         return cityData;
     }
+
+    @Override
+    public void saveFavourites(List<CityData> favourites) {
+
+    }
 }

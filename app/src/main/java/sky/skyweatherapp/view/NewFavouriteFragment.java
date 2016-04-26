@@ -68,6 +68,8 @@ public class NewFavouriteFragment extends DialogFragment implements NetworkFetch
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+
         inflatedView = inflater.inflate(R.layout.new_favourite_fragment, null);
 
         inflatedView.findViewById(R.id.newfavourite_search).setOnClickListener(new View.OnClickListener() {
@@ -158,8 +160,8 @@ public class NewFavouriteFragment extends DialogFragment implements NetworkFetch
         public void onClick(View v) {
             MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
             mainScreenActivity.getPresenterCallback().newFavouriteCitySelected(cityData);
-        }
 
+        }
 
     }
 }

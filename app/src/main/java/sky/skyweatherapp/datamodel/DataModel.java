@@ -21,7 +21,7 @@ public class DataModel {
     private final ForecastRetriever forecastRetriever;
 
     private final String API_ForecastRetrieve = "http://api.openweathermap.org/data/2.5/forecast?id=%d&appid=%s";
-    public List<CityData> favourites = new ArrayList<>();
+    private List<CityData> favourites = new ArrayList<>();
 
 
     public DataModel(String apiKey, FavouriteCitiesRetriever favouriteCitiesRetriever, CityDataParser cityDataParser, ForecastRetriever forecastRetriever) {
@@ -43,7 +43,16 @@ public class DataModel {
 
     }
 
-    public List<CityData> retrieveFavourites() {
-        return favouriteCitiesRetriever.retrieveFavourites();
+    public void retrieveFavourites() {
+        favourites = favouriteCitiesRetriever.retrieveFavourites();
+    }
+
+    public void addFavourite(CityData cityData) {
+        favourites.add(cityData);
+        favouriteCitiesRetriever.saveFavourites(favourites);
+    }
+
+    public List<CityData> getFavourites() {
+        return favourites;
     }
 }

@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sky.skyweatherapp.R;
@@ -31,10 +33,16 @@ import sky.skyweatherapp.services.NetworkFetcherService;
 /**
  * Created by S on 25/04/2016.
  */
-public class NewFavouriteFragment extends DialogFragment implements View.OnClickListener, NetworkFetcherService.NetworkCallCompleteCallback {
+public class NewFavouriteFragment extends DialogFragment implements  NetworkFetcherService.NetworkCallCompleteCallback {
 
     private View inflatedView;
     private NetworkFetcherService networkService;
+    private RecyclerView citiesList;
+    private EditText searchCriteria;
+    private CitiesAdapter citiesAdapter;
+
+
+
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -49,64 +57,45 @@ public class NewFavouriteFragment extends DialogFragment implements View.OnClick
 
         }
     };
-    private RecyclerView citiesList;
-    private EditText searchCriteria;
-
 
     public void setCountriesListData(List<CityData> cityData) {
-        CitiesAdapter citiesAdapter = new CitiesAdapter(cityData);
-        citiesList.setAdapter(citiesAdapter);
+
+        int x=0;
+        citiesAdapter.setData(cityData);
+        citiesAdapter.notifyDataSetChanged();
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         inflatedView = inflater.inflate(R.layout.new_favourite_fragment, null);
 
-        inflatedView.findViewById(R.id.newfavourite_search).setOnClickListener(this);
+        inflatedView.findViewById(R.id.newfavourite_search).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
-        searchCriteria = (EditText)inflatedView.findViewById(R.id.newfavourite_cityname);
-        citiesList = (RecyclerView)inflatedView.findViewById(R.id.newfavourite_list);
+                String cityName = searchCriteria.getText().toString();
+                String url = String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=cf9d82cc9699db27242567f0cefbfce5&mode=json", cityName);
+
+                Intent i = new Intent(getContext(), NetworkFetcherService.class);
+                i.putExtra("url", url);
+                i.putExtra("message", getString(R.string.searching));
+
+                getActivity().bindService(i, serviceConnection, Context.BIND_AUTO_CREATE);
+                getActivity().startService(i);
+
+            }
+
+        });
+
+        searchCriteria = (EditText) inflatedView.findViewById(R.id.newfavourite_cityname);
+        citiesList = (RecyclerView) inflatedView.findViewById(R.id.newfavourite_list);
         citiesList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        builder.setView(inflatedView)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+        citiesAdapter = new CitiesAdapter();
+        citiesList.setAdapter(citiesAdapter);
 
-
-
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setTitle("Add new favourite");
-
-        return builder.create();
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        String cityName = searchCriteria.getText().toString();
-        String url = String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=cf9d82cc9699db27242567f0cefbfce5&mode=json",cityName);
-
-        Intent i = new Intent(getContext(),NetworkFetcherService.class);
-        i.putExtra("url",url);
-        i.putExtra("message",getString(R.string.searching));
-
-        getActivity().bindService(i,serviceConnection, Context.BIND_AUTO_CREATE);
-        getActivity().startService(i);
-
+        return inflatedView;
     }
 
     @Override
@@ -123,9 +112,9 @@ public class NewFavouriteFragment extends DialogFragment implements View.OnClick
     }
 
     private class CitiesAdapter extends RecyclerView.Adapter {
-        private final List<CityData> cityData;
+        private List<CityData> cityData = new ArrayList<>();
 
-        public CitiesAdapter(List<CityData> cityData) {
+        public void setData(List<CityData> cityData) {
             this.cityData = cityData;
         }
 

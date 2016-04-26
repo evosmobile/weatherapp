@@ -65,6 +65,8 @@ public class NetworkFetcherService extends IntentService {
             URL downloadUrl = new URL(url);
             response = IOUtils.toString(downloadUrl.openStream());
 
+            Thread.sleep(4000);
+
         } catch (Exception e) {
             Log.e(TAG, "onHandleIntent: " + e.toString() );
         } finally {

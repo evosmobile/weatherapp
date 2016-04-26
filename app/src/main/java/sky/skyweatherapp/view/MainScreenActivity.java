@@ -33,16 +33,13 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
         MainScreenPresenter mainScreenPresenter = new MainScreenPresenter(this, model);
 
-
         findViewById(R.id.addNewFavouriteButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                newFavouriteFragment = new NewFavouriteFragment();
-
                 FragmentManager fragmentManager = getSupportFragmentManager();
-
-                newFavouriteFragment.show(fragmentManager, "newfavourite");
+                newFavouriteFragment = new NewFavouriteFragment();
+                newFavouriteFragment.show(fragmentManager, null);
             }
         });
     }

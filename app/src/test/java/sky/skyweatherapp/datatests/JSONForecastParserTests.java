@@ -1,7 +1,5 @@
 package sky.skyweatherapp.datatests;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -27,7 +25,29 @@ public class JSONForecastParserTests {
 
         List<ForecastItem> forecastItems = parser.parseForecast(TestData.sampleForecastData);
 
-        assertThat(forecastItems.size(), is(3));
+        assertThat(forecastItems.size(), is(40));
+    }
+
+    @Test
+    public void givenAJSONForecast_theParserCorrectlySetsTheTimeWindSpeedAndDirection() {
+
+        JSONForecastParser parser = new JSONForecastParser();
+
+        List<ForecastItem> forecastItems = parser.parseForecast(TestData.sampleForecastData);
+
+        ForecastItem forecastItem1 = forecastItems.get(0);
+
+        assertThat(forecastItem1.getDatetime(), is(1461704400L));
+        assertThat(forecastItem1.getSpeed(), is(5.95));
+        assertThat(forecastItem1.getDirection(), is(127.001));
+
+
+        ForecastItem forecastItem5 = forecastItems.get(4);
+
+        assertThat(forecastItem5.getDatetime(), is(1461747600L));
+        assertThat(forecastItem5.getSpeed(), is(3.97));
+        assertThat(forecastItem5.getDirection(), is(122.501));
+
     }
 
 
@@ -41,15 +61,17 @@ public class JSONForecastParserTests {
             List<ForecastItem> forecastItems = new ArrayList<>();
 
             try {
-                JSONObject forecast = new JSONObject(data);
+                JSONObject forecastData = new JSONObject(data);
 
-                JSONArray forecasts = forecast.getJSONArray("list");
+                JSONArray forecasts = forecastData.getJSONArray("list");
 
                 for (int i = 0; i<forecasts.length(); i++) {
-                    forecastItems.add(new ForecastItem(0.0d, 0.0d));
+
+                    JSONObject forecast = forecasts.getJSONObject(i);
+                    JSONObject wind = forecast.getJSONObject("wind");
+
+                    forecastItems.add(new ForecastItem(forecast.getLong("dt"), wind.getDouble("speed"), wind.getDouble("deg")));
                 }
-
-
 
             } catch (Exception ex) {
             }

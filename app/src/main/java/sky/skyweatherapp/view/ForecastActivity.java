@@ -8,9 +8,20 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import sky.skyweatherapp.R;
 import sky.skyweatherapp.datamodel.CityData;
+import sky.skyweatherapp.datamodel.ForecastItem;
 import sky.skyweatherapp.datamodel.ForecastModel;
 import sky.skyweatherapp.datamodel.JSONForecastParser;
 import sky.skyweatherapp.presenters.ForecastScreenPresenter;
@@ -40,12 +51,23 @@ public class ForecastActivity extends AppCompatActivity implements ForecastView,
 
         }
     };
+    private DataRetrievedCallback dataRetrievedCallback;
+    private RecyclerView forecastList;
+    private ForecastDataAdapter forecastDataAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_forecast);
+
+        forecastDataAdapter = new ForecastDataAdapter();
+
+        forecastList = (RecyclerView)findViewById(R.id.forecast_list);
+        forecastList.setLayoutManager(new LinearLayoutManager(this));
+        forecastList.setAdapter(forecastDataAdapter);
+
+
 
         Intent i = getIntent();
         this.cityData = new CityData(i.getLongExtra("id", -1), i.getStringExtra("city"), i.getStringExtra("country"));
@@ -71,11 +93,90 @@ public class ForecastActivity extends AppCompatActivity implements ForecastView,
 
     @Override
     public void setDataRetrievedCallback(DataRetrievedCallback callback) {
+        this.dataRetrievedCallback = callback;
+    }
+
+    @Override
+    public void setForecastData(final List<ForecastItem> forecastItems) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                forecastDataAdapter.setForecastItems(forecastItems);
+                forecastDataAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 
     @Override
     public void networkCallComplete(String response) {
+        dataRetrievedCallback.dataRetrieved(response);
+    }
 
+    private class ForecastDataAdapter extends RecyclerView.Adapter {
+
+        private List<ForecastItem> forecastItems = new ArrayList<>();
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v =  getLayoutInflater().inflate(R.layout.forecast_listitem, parent,false);
+            return new ForecastListItem(v);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ForecastListItem listItem = (ForecastListItem)holder;
+            listItem.setData(position, forecastItems.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return forecastItems.size();
+        }
+
+        public void setForecastItems(List<ForecastItem> forecastItems) {
+            this.forecastItems = forecastItems;
+        }
+    }
+
+    private class ForecastListItem extends RecyclerView.ViewHolder {
+
+        private final TextView date;
+        private final TextView time;
+        private final TextView direction;
+        private final TextView speed;
+        private ForecastItem forecastItem;
+
+
+
+        public ForecastListItem(View itemView) {
+            super(itemView);
+
+            date = (TextView)itemView.findViewById(R.id.forecast_item_date);
+            time = (TextView)itemView.findViewById(R.id.forecast_item_time);
+            direction = (TextView)itemView.findViewById(R.id.forecast_item_direction);
+            speed = (TextView)itemView.findViewById(R.id.forecast_item_speed);
+        }
+
+        public void setData(int position, ForecastItem forecastItem) {
+            this.forecastItem = forecastItem;
+
+            DateFormat dateFormat = new SimpleDateFormat("dd MMM");
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+            date.setText(dateFormat.format(forecastItem.getDatetime() * 1000));
+            time.setText(timeFormat.format(forecastItem.getDatetime() * 1000));
+            direction.setText(String.format("%.2f", forecastItem.getDirection()));
+            speed.setText(String.format("%.2f", forecastItem.getSpeed()));
+
+            //Hide date except on first forecast of day
+            if (position!=0 && !(time.getText().equals("01:00"))) {
+                date.setVisibility(View.GONE);
+            }
+            else  {
+                date.setVisibility(View.VISIBLE);
+            }
+
+        }
     }
 }

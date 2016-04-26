@@ -33,7 +33,6 @@ public class ForecastScreenPresenterTest {
     @Test
     public void givenAModelAndAForecastScreenView_thePresenterCausesTheViewToRetrieveItsData() {
 
-
         ForecastScreenPresenter forecastScreenPresenter = new ForecastScreenPresenter(invokableCapturingForecastView, model);
 
         String expectedUrl = "http://api.openweathermap.org/data/2.5/forecast?id=6789&appid=1234";
@@ -67,6 +66,11 @@ public class ForecastScreenPresenterTest {
         @Override
         public void setDataRetrievedCallback(DataRetrievedCallback callback) {
             this.callback = callback;
+        }
+
+        @Override
+        public void setForecastData(List<ForecastItem> forecastItems) {
+            //TODO Unit test this
         }
 
         public void invokeDataRetrievedCallback() {

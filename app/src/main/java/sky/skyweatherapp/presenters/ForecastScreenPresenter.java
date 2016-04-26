@@ -26,5 +26,6 @@ public class ForecastScreenPresenter implements ForecastView.DataRetrievedCallba
     @Override
     public void dataRetrieved(String response) {
         List<ForecastItem> forecastItems = model.parseResponsData(response);
+        forecastView.setForecastData(forecastItems);
     }
 }

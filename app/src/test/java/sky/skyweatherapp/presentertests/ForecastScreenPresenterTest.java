@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import sky.skyweatherapp.datamodel.ForecastModel;
 import sky.skyweatherapp.helpers.NULLForecastParser;
+import sky.skyweatherapp.presenters.ForecastScreenPresenter;
+import sky.skyweatherapp.view.ForecastView;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,21 +40,4 @@ public class ForecastScreenPresenterTest {
         }
     }
 
-    interface ForecastView {
-        String retrieveForecast(String url);
-    }
-
-    private class ForecastScreenPresenter {
-        private final ForecastView forecastView;
-        private final ForecastModel model;
-
-        public ForecastScreenPresenter(ForecastView forecastView, ForecastModel model) {
-
-            this.forecastView = forecastView;
-            this.model = model;
-
-            forecastView.retrieveForecast(model.getForecastUrl());
-
-        }
-    }
 }

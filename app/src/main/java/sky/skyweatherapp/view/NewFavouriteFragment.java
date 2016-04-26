@@ -104,6 +104,13 @@ public class NewFavouriteFragment extends DialogFragment implements NetworkFetch
         return inflatedView;
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unbindService(serviceConnection);
+    }
+
     @Override
     public void networkCallComplete(final String response) {
 

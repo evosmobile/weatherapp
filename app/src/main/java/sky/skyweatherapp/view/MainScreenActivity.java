@@ -69,6 +69,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     }
 
+
     @Override
     public void displayNoDataMessage() {
         Toast.makeText(this, "No cities selected", Toast.LENGTH_LONG).show();

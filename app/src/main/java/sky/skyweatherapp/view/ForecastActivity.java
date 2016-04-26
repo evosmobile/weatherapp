@@ -51,6 +51,14 @@ public class ForecastActivity extends AppCompatActivity implements ForecastView,
 
         }
     };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unbindService(serviceConnection);
+    }
+
     private DataRetrievedCallback dataRetrievedCallback;
     private RecyclerView forecastList;
     private ForecastDataAdapter forecastDataAdapter;

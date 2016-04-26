@@ -28,7 +28,7 @@ public class MainScreenPresenterTest {
     @Test
     public void givenADataModelIsProvided_thePresenterSetsUpTheScreenAsExpected() {
 
-        CapturingMainScreenView capturingMainView = new CapturingMainScreenView();
+        CapturingInvokableMainScreenView capturingMainView = new CapturingInvokableMainScreenView();
 
         CannedFavouriteCities cannedFavouriteCities = new CannedFavouriteCities();
         DataModel model = new DataModel(null, cannedFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
@@ -40,7 +40,7 @@ public class MainScreenPresenterTest {
 
     @Test
     public void givenADataModelIsProvidedWithNoFavourites_ThenViewIsInstructedToDisplayTheNoFavouritesMessage() {
-        CapturingMainScreenView capturingMainView = new CapturingMainScreenView();
+        CapturingInvokableMainScreenView capturingMainView = new CapturingInvokableMainScreenView();
 
         EmptyFavouriteCities emptyFavouriteCities = new EmptyFavouriteCities();
         DataModel model = new DataModel(null, emptyFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
@@ -54,19 +54,38 @@ public class MainScreenPresenterTest {
     @Test
     public void whenACitySearchHasBeenPerformed_thePresenterIsNotified_andSetsTheListOfMatchesTheView() {
 
-        CapturingMainScreenView capturingMainScreenView = new CapturingMainScreenView();
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
         DataModel model = new DataModel(null, new NullFavouriteCitiesRetriever(),new JSONCityDataParser(),new NullForecastRetriever());
 
-        MainScreenPresenter presenter = new MainScreenPresenter(capturingMainScreenView, model);
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
 
-        capturingMainScreenView.capturedCallback.cityDataRetrieved(TestData.sampleCityData);
+        capturingInvokableMainScreenView.capturedCallback.cityDataRetrieved(TestData.sampleCityData);
 
-        assertThat(capturingMainScreenView.capturedMatchedCities.size(), is(4));
+        assertThat(capturingInvokableMainScreenView.capturedMatchedCities.size(), is(4));
 
     }
 
+    @Test
+    public void whenACitySearchResultHasBeenSelected_thePresenterIsNotified_andTheModelStoresItInItsListOfFavourites() {
 
-    private class CapturingMainScreenView implements MainScreenView {
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        DataModel model = new DataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser(), new NullForecastRetriever());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView,model);
+
+        CityData expectedData = new CityData(1234, "CityName", "Country");
+
+
+        capturingInvokableMainScreenView.invokeCitySelectedCallback(expectedData);
+
+        assertThat(model.favourites.size(), is(1));
+        assertThat(model.favourites.get(0).getId(),is(1234L));
+        assertThat(model.favourites.get(0).getName(),is("CityName"));
+        assertThat(model.favourites.get(0).getCountry(),is("Country"));
+    }
+
+
+    private class CapturingInvokableMainScreenView implements MainScreenView {
         public List<CityData> capturedCities = new ArrayList<>();
         public boolean capturedNoDataMessageDisplayed = false;
         public PresenterCallback capturedCallback = null;
@@ -92,6 +111,10 @@ public class MainScreenPresenterTest {
             capturedMatchedCities = cityData;
         }
 
+        public void invokeCitySelectedCallback(CityData cityData) {
+            capturedCallback.newFavouriteCitySelected(cityData);
+
+        }
     }
 
 }

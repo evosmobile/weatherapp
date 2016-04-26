@@ -41,4 +41,9 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
             Log.e(TAG, "cityDataRetrieved: " + e.toString());
         }
     }
+
+    @Override
+    public void newFavouriteCitySelected(CityData cityData) {
+        model.favourites.add(cityData);
+    }
 }

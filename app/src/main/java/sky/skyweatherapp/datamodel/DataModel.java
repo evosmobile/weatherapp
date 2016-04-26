@@ -21,6 +21,7 @@ public class DataModel {
     private final ForecastRetriever forecastRetriever;
 
     private final String API_ForecastRetrieve = "http://api.openweathermap.org/data/2.5/forecast?id=%d&appid=%s";
+    public List<CityData> favourites = new ArrayList<>();
 
 
     public DataModel(String apiKey, FavouriteCitiesRetriever favouriteCitiesRetriever, CityDataParser cityDataParser, ForecastRetriever forecastRetriever) {

@@ -139,10 +139,11 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
         }
     }
 
-    private class CitiesListItem extends RecyclerView.ViewHolder {
+    private class CitiesListItem extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView city;
         TextView country;
+        private CityData cityData;
 
         public CitiesListItem(View itemView) {
             super(itemView);
@@ -150,11 +151,21 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
             city = (TextView)itemView.findViewById(R.id.cityitemholder_city);
             country = (TextView)itemView.findViewById(R.id.cityitemholder_country);
 
+            itemView.setOnClickListener(this);
         }
 
         public void setData(CityData cityData) {
+            this.cityData = cityData;
             city.setText(cityData.getName());
             country.setText(cityData.getCountry());
         }
+
+        @Override
+        public void onClick(View v) {
+            MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+            mainScreenActivity.getPresenterCallback().newFavouriteCitySelected(cityData);
+        }
+
+
     }
 }

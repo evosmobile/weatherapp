@@ -12,7 +12,7 @@ import sky.skyweatherapp.datamodel.CityData;
 /**
  * Created by mcdons20 on 26/04/16.
  */
-public class ForecastActivity extends AppCompatActivity {
+public class ForecastActivity extends AppCompatActivity  {
 
     private CityData cityData;
 

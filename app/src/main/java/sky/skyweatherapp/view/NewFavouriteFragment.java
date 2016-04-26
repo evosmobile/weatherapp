@@ -78,6 +78,8 @@ public class NewFavouriteFragment extends DialogFragment implements NetworkFetch
                 InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
+
+                //TODO: Refactor
                 String cityName = searchCriteria.getText().toString();
                 String url = String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=cf9d82cc9699db27242567f0cefbfce5&mode=json", cityName);
 

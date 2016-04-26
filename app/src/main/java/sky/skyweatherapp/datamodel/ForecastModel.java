@@ -1,5 +1,7 @@
 package sky.skyweatherapp.datamodel;
 
+import java.util.List;
+
 /**
  * Created by mcdons20 on 26/04/16.
  */
@@ -19,5 +21,9 @@ public class ForecastModel {
     public String getForecastUrl() {
         String url = String.format(FORECAST_URL_FORMAT, locationId, apiKey);
         return url;
+    }
+
+    public List<ForecastItem> parseResponsData(String response) {
+        return forecastParser.parseForecast(response);
     }
 }

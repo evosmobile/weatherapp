@@ -1,14 +1,11 @@
 package sky.skyweatherapp.datatests;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sky.skyweatherapp.datamodel.ForecastItem;
-import sky.skyweatherapp.datamodel.ForecastParser;
+import sky.skyweatherapp.datamodel.JSONForecastParser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,33 +48,4 @@ public class JSONForecastParserTests {
     }
 
 
-
-    private class JSONForecastParser implements ForecastParser {
-        private String TAG = "JSONForecastParser";
-
-        @Override
-        public List<ForecastItem> parseForecast(String data) {
-
-            List<ForecastItem> forecastItems = new ArrayList<>();
-
-            try {
-                JSONObject forecastData = new JSONObject(data);
-
-                JSONArray forecasts = forecastData.getJSONArray("list");
-
-                for (int i = 0; i<forecasts.length(); i++) {
-
-                    JSONObject forecast = forecasts.getJSONObject(i);
-                    JSONObject wind = forecast.getJSONObject("wind");
-
-                    forecastItems.add(new ForecastItem(forecast.getLong("dt"), wind.getDouble("speed"), wind.getDouble("deg")));
-                }
-
-            } catch (Exception ex) {
-            }
-
-
-            return forecastItems;
-        }
-    }
 }

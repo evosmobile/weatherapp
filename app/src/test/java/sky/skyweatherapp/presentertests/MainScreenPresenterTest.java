@@ -10,6 +10,7 @@ import sky.skyweatherapp.datamodel.DataModel;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
 import sky.skyweatherapp.datatests.TestData;
 import sky.skyweatherapp.helpers.CannedFavouriteCities;
+import sky.skyweatherapp.helpers.CapturingFavouriteCitiesRetriever;
 import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullFavouriteCitiesRetriever;
@@ -105,6 +106,30 @@ public class MainScreenPresenterTest {
         assertThat(capturedCity.getId(),is(1234L));
     }
 
+    @Test
+    public void whenTheViewTellsTheModelToRemoveAFavourite_theModeInformsTheFavouriteRetriever() {
+
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        CapturingFavouriteCitiesRetriever favouriteCitiesRetriever = new CapturingFavouriteCitiesRetriever();
+        DataModel model = new DataModel(null, favouriteCitiesRetriever, new NullCityDataParser(), new NullForecastRetriever());
+
+
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
+
+        CityData cityData = new CityData(1,"City", "Country");
+
+        model.addFavourite(cityData);
+
+        assertThat(model.getFavourites().size(),is(1));
+
+        capturingInvokableMainScreenView.invokeFavouriteDeleted(cityData);
+
+        assertThat(model.getFavourites().size(),is(0));
+        assertThat(favouriteCitiesRetriever.capturedFavourites.size(), is(0));
+
+    }
+
 
     private class CapturingInvokableMainScreenView implements MainScreenView {
         public List<CityData> capturedCities = new ArrayList<>();
@@ -135,6 +160,10 @@ public class MainScreenPresenterTest {
         public void invokeCitySelectedCallback(CityData cityData) {
             capturedCallback.newFavouriteCitySelected(cityData);
 
+        }
+
+        public void invokeFavouriteDeleted(CityData cityData) {
+            capturedCallback.deleteFavourite(cityData);
         }
     }
 

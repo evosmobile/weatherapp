@@ -20,5 +20,6 @@ public interface MainScreenView {
     interface PresenterCallback {
         void cityDataRetrieved(String response);
         void newFavouriteCitySelected(CityData cityData);
+        void deleteFavourite(CityData cityData);
     }
 }

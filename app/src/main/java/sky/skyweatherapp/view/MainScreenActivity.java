@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.DataModel;
 import sky.skyweatherapp.datamodel.ForecastRetriever;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
-import sky.skyweatherapp.helpers.FavouriteCitiesRetriever;
+import sky.skyweatherapp.helpers.SharedPreferencesFavouritesRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
 
 public class MainScreenActivity extends FragmentActivity implements MainScreenView {
@@ -35,7 +36,14 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
         String apiKey = getResources().getString(R.string.api_key);
 
-        DataModel model = new DataModel(apiKey, new SharedPreferencesFavouritesRetriever(), new JSONCityDataParser(), new JSONForecastRetriever());
+        favouritesList = (RecyclerView) findViewById(R.id.main_favouritesList);
+        favouritesList.setLayoutManager(new LinearLayoutManager(this));
+
+        favouritesListAdapter = new FavouritesListAdapter();
+        favouritesList.setAdapter(favouritesListAdapter);
+
+
+        DataModel model = new DataModel(apiKey, new SharedPreferencesFavouritesRetriever(this), new JSONCityDataParser(), new JSONForecastRetriever());
 
         MainScreenPresenter mainScreenPresenter = new MainScreenPresenter(this, model);
 
@@ -48,14 +56,6 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
                 newFavouriteFragment.show(fragmentManager, null);
             }
         });
-
-        favouritesList = (RecyclerView) findViewById(R.id.main_favouritesList);
-        favouritesList.setLayoutManager(new LinearLayoutManager(this));
-
-        favouritesListAdapter = new FavouritesListAdapter();
-
-        favouritesList.setAdapter(favouritesListAdapter);
-
     }
 
     @Override
@@ -87,20 +87,6 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     public PresenterCallback getPresenterCallback() {
         return presenterCallback;
-    }
-
-    private class SharedPreferencesFavouritesRetriever implements FavouriteCitiesRetriever {
-        private List<CityData> favourites = new ArrayList<>();
-
-        @Override
-        public List<CityData> retrieveFavourites() {
-            return favourites;
-        }
-
-        @Override
-        public void saveFavourites(List<CityData> favourites) {
-
-        }
     }
 
     private class JSONForecastRetriever implements ForecastRetriever {
@@ -141,7 +127,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         }
     }
 
-    private class FavouritesViewHolder extends RecyclerView.ViewHolder {
+    private class FavouritesViewHolder extends RecyclerView.ViewHolder  {
 
         private final TextView city;
         private final TextView country;
@@ -158,5 +144,8 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
             city.setText(cityData.getName());
             country.setText(cityData.getCountry());
         }
+
+
+
     }
 }

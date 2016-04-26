@@ -55,4 +55,13 @@ public class DataModel {
     public List<CityData> getFavourites() {
         return favourites;
     }
+
+    public void deleteFavourite(CityData cityData) {
+        for (int x=favourites.size()-1;x>=0;x--) {
+            if (favourites.get(x).getId()==cityData.getId()) {
+                favourites.remove(x);
+            }
+        }
+        favouriteCitiesRetriever.saveFavourites(favourites);
+    }
 }

@@ -11,4 +11,6 @@
     <string name="downloading_forecast">Downloading forecast...</string>
     <string name="favourite_places">Favourite Places</string>
     <string name="no_favourites">No favourites have been selected.\nAdd favourites by clicking the button below.</string>
+    <string name="dialog_title">Search places</string>
+    <string name="new_favourite_message">New favourite place added!</string>
 </resources>

@@ -69,6 +69,7 @@ public class NewFavouriteFragment extends DialogFragment implements NetworkFetch
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
+        getDialog().setTitle(getString(R.string.dialog_title));
 
         inflatedView = inflater.inflate(R.layout.new_favourite_fragment, null);
 

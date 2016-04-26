@@ -98,6 +98,11 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         });
     }
 
+    @Override
+    public void displayNewFavouriteMessage() {
+        Toast.makeText(this, R.string.new_favourite_message, Toast.LENGTH_SHORT).show();
+    }
+
     public PresenterCallback getPresenterCallback() {
         return presenterCallback;
     }

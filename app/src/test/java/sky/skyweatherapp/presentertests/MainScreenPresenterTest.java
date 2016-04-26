@@ -155,6 +155,11 @@ public class MainScreenPresenterTest {
             capturedMatchedCities = cityData;
         }
 
+        @Override
+        public void displayNewFavouriteMessage() {
+
+        }
+
         public void invokeCitySelectedCallback(CityData cityData) {
             capturedCallback.newFavouriteCitySelected(cityData);
 

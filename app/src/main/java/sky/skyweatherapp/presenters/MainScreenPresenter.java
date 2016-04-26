@@ -52,6 +52,7 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     public void newFavouriteCitySelected(CityData cityData) {
         model.addFavourite(cityData);
         checkFavourites();
+        mainScreenView.displayNewFavouriteMessage();
     }
 
     @Override

@@ -7,8 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/newfavourite_title"
@@ -16,6 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
         android:text="@string/enter_city_name"/>
 
 
@@ -32,6 +33,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:maxLength="20" />
 
         <Button
@@ -46,8 +48,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/newfavourite_list"
         android:layout_below="@id/newfavourite_buttonbar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginTop="10dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="0dp"
+        android:background="#CCC"
         android:layout_height="200dp">
     </android.support.v7.widget.RecyclerView>
 

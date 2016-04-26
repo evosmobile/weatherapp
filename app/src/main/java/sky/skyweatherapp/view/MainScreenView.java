@@ -17,6 +17,8 @@ public interface MainScreenView {
 
     void setCitySearchResults(List<CityData> cityData);
 
+    void displayNewFavouriteMessage();
+
     interface PresenterCallback {
         void cityDataRetrieved(String response);
         void newFavouriteCitySelected(CityData cityData);

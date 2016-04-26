@@ -61,13 +61,12 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     @Override
     public void setCitySearchResults(final List<CityData> cityData) {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 newFavouriteFragment.setCountriesListData(cityData);
-//            }
-//        });
-
+            }
+        });
     }
 
     public PresenterCallback getPresenterCallback() {

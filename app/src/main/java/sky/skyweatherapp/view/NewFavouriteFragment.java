@@ -35,7 +35,7 @@ import sky.skyweatherapp.services.NetworkFetcherService;
 /**
  * Created by S on 25/04/2016.
  */
-public class NewFavouriteFragment extends DialogFragment implements  NetworkFetcherService.NetworkCallCompleteCallback {
+public class NewFavouriteFragment extends DialogFragment implements NetworkFetcherService.NetworkCallCompleteCallback {
 
     private View inflatedView;
     private NetworkFetcherService networkService;
@@ -44,11 +44,10 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
     private CitiesAdapter citiesAdapter;
 
 
-
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            NetworkFetcherService.ServiceBinder binder = (NetworkFetcherService.ServiceBinder)service;
+            NetworkFetcherService.ServiceBinder binder = (NetworkFetcherService.ServiceBinder) service;
             networkService = binder.getService();
 
             networkService.setCallback(NewFavouriteFragment.this);
@@ -74,8 +73,8 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
         inflatedView.findViewById(R.id.newfavourite_search).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
                 String cityName = searchCriteria.getText().toString();
                 String url = String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=cf9d82cc9699db27242567f0cefbfce5&mode=json", cityName);
@@ -102,15 +101,10 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
     }
 
     @Override
-    public void complete(final String response) {
+    public void networkCallComplete(final String response) {
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
-                mainScreenActivity.getPresenterCallback().cityDataRetrieved(response);
-            }
-        });
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
+        mainScreenActivity.getPresenterCallback().cityDataRetrieved(response);
 
     }
 
@@ -123,13 +117,13 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = getLayoutInflater(null).inflate(R.layout.country_list_item,parent,false);
+            View v = getLayoutInflater(null).inflate(R.layout.country_list_item, parent, false);
             return new CitiesListItem(v);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            CitiesListItem item = (CitiesListItem)holder;
+            CitiesListItem item = (CitiesListItem) holder;
             item.setData(cityData.get(position));
         }
 
@@ -148,8 +142,8 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
         public CitiesListItem(View itemView) {
             super(itemView);
 
-            city = (TextView)itemView.findViewById(R.id.cityitemholder_city);
-            country = (TextView)itemView.findViewById(R.id.cityitemholder_country);
+            city = (TextView) itemView.findViewById(R.id.cityitemholder_city);
+            country = (TextView) itemView.findViewById(R.id.cityitemholder_country);
 
             itemView.setOnClickListener(this);
         }
@@ -162,7 +156,7 @@ public class NewFavouriteFragment extends DialogFragment implements  NetworkFetc
 
         @Override
         public void onClick(View v) {
-            MainScreenActivity mainScreenActivity = (MainScreenActivity)getActivity();
+            MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
             mainScreenActivity.getPresenterCallback().newFavouriteCitySelected(cityData);
         }
 

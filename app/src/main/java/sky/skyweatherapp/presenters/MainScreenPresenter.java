@@ -23,11 +23,12 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
 
         mainScreenView.setPresenterCallback(this);
 
-        List<CityData> favouriteCities = model.retrieveFavourites();
-        if (favouriteCities.size() == 0) {
+        //TODO: refactor this
+        model.favourites = model.retrieveFavourites();
+        if (model.favourites.size() == 0) {
             mainScreenView.displayNoDataMessage();
         } else {
-            mainScreenView.setFavourites(favouriteCities);
+            mainScreenView.setFavourites(model.favourites);
         }
     }
 
@@ -45,5 +46,6 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     @Override
     public void newFavouriteCitySelected(CityData cityData) {
         model.favourites.add(cityData);
+        mainScreenView.setFavourites(model.favourites);
     }
 }

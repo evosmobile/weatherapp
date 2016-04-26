@@ -85,6 +85,27 @@ public class MainScreenPresenterTest {
     }
 
 
+    @Test
+    public void whenACitySearchResultHasBeenSelected_thePresenterIsNotified_andItUpdatesTheListOnTheMainView() {
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        DataModel model = new DataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser(), new NullForecastRetriever());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView,model);
+
+        CityData expectedData = new CityData(1234, "CityName", "Country");
+
+
+        capturingInvokableMainScreenView.invokeCitySelectedCallback(expectedData);
+
+        assertThat(capturingInvokableMainScreenView.capturedCities.size(),is(1));
+
+        CityData capturedCity = capturingInvokableMainScreenView.capturedCities.get(0);
+        assertThat(capturedCity.getCountry(), is("Country"));
+        assertThat(capturedCity.getName(),is("CityName"));
+        assertThat(capturedCity.getId(),is(1234L));
+    }
+
+
     private class CapturingInvokableMainScreenView implements MainScreenView {
         public List<CityData> capturedCities = new ArrayList<>();
         public boolean capturedNoDataMessageDisplayed = false;

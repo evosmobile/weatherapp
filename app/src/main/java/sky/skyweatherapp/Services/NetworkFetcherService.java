@@ -3,7 +3,6 @@ package sky.skyweatherapp.services;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -12,10 +11,7 @@ import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.security.auth.login.LoginException;
 
 import sky.skyweatherapp.R;
 
@@ -71,13 +67,13 @@ public class NetworkFetcherService extends IntentService {
 
             manager.cancel(NOTIFICATION_ID);
             if (callback!=null) {
-                callback.complete(response);
+                callback.networkCallComplete(response);
             }
         }
     }
 
     public interface NetworkCallCompleteCallback {
-        void complete(String response);
+        void networkCallComplete(String response);
     }
 
     public class ServiceBinder extends Binder {

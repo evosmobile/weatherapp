@@ -7,6 +7,8 @@
     <string name="search">Search</string>
     <string name="downloading">Downloading...</string>
     <string name="searching">Searching...</string>
-    <string name="weather_app">Weather App!</string>
+    <string name="weather_app">Windwatcher</string>
     <string name="downloading_forecast">Downloading forecast...</string>
+    <string name="favourite_places">Favourite Places</string>
+    <string name="no_favourites">No favourites have been selected.\nAdd favourites by clicking the button below.</string>
 </resources>

@@ -38,7 +38,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String apiKey = getResources().getString(R.string.api_key);
+        String apiKey = getString(R.string.api_key);
 
         favouritesList = (RecyclerView) findViewById(R.id.main_favouritesList);
         favouritesList.setLayoutManager(new LinearLayoutManager(this));
@@ -64,6 +64,11 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     @Override
     public void setFavourites(List<CityData> cityData) {
+
+        if (cityData.size()>0) {
+            findViewById(R.id.main_nofavourites).setVisibility(View.INVISIBLE);
+        }
+
         favouritesListAdapter.setCityData(cityData);
         favouritesListAdapter.notifyDataSetChanged();
 
@@ -72,7 +77,10 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     @Override
     public void displayNoDataMessage() {
-        Toast.makeText(this, "No cities selected", Toast.LENGTH_LONG).show();
+
+        findViewById(R.id.main_nofavourites).setVisibility(View.VISIBLE);
+
+      //  Toast.makeText(this, "No cities selected", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -103,8 +111,10 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
     private class FavouritesListAdapter extends RecyclerView.Adapter {
 
-        List<CityData> cityData = new ArrayList<>();
+        private static final int TYPE_HEADER = 2506;
+        private static final int TYPE_ITEM = 1308;
 
+        List<CityData> cityData = new ArrayList<>();
 
         public void setCityData(List<CityData> cityData) {
             this.cityData = cityData;
@@ -112,23 +122,42 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            View v = getLayoutInflater().inflate(R.layout.favourites_list_item, null);
-
-            return new FavouritesViewHolder(v);
+            if (viewType==TYPE_ITEM) {
+                View v = getLayoutInflater().inflate(R.layout.favourites_list_item, parent, false);
+                return new FavouritesViewHolder(v);
+            }
+            else {
+                View v = getLayoutInflater().inflate(R.layout.favourites_list_header, parent, false);
+                return new FavouritesHeaderViewHolder(v);
+            }
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (position>0) {
+                FavouritesViewHolder viewHolder = (FavouritesViewHolder) holder;
+                viewHolder.setData(cityData.get(position-1));
+            }
+        }
 
-            FavouritesViewHolder viewHolder = (FavouritesViewHolder) holder;
-            viewHolder.setData(cityData.get(position));
-
+        @Override
+        public int getItemViewType(int position) {
+            if (position==0) {
+                return TYPE_HEADER;
+            } else {
+                return TYPE_ITEM;
+            }
         }
 
         @Override
         public int getItemCount() {
-            return cityData.size();
+            return cityData.size()+1;
+        }
+    }
+
+    public class FavouritesHeaderViewHolder extends RecyclerView.ViewHolder {
+        public FavouritesHeaderViewHolder(View itemView) {
+            super(itemView);
         }
     }
 

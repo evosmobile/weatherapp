@@ -24,11 +24,17 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
 
         model.retrieveFavourites();
 
+        checkFavourites();
+    }
+
+    private void checkFavourites() {
+        mainScreenView.setFavourites(model.getFavourites());
+
         if (model.getFavourites().size() == 0) {
             mainScreenView.displayNoDataMessage();
-        } else {
-            mainScreenView.setFavourites(model.getFavourites());
         }
+
+
     }
 
     @Override
@@ -45,12 +51,12 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     @Override
     public void newFavouriteCitySelected(CityData cityData) {
         model.addFavourite(cityData);
-        mainScreenView.setFavourites(model.getFavourites());
+        checkFavourites();
     }
 
     @Override
     public void deleteFavourite(CityData cityData) {
         model.deleteFavourite(cityData);
-        mainScreenView.setFavourites(model.getFavourites());
+        checkFavourites();
     }
 }

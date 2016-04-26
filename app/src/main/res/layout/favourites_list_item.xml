@@ -4,19 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    style="@style/main_listitem">
 
     <TextView
         android:id="@+id/favouritesitem_city"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        style="@style/main_listitem_text"
         tools:text="City" />
 
     <TextView
         android:id="@+id/favouritesitem_country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/main_listitem_text"
         tools:text="Country" />
 
 </LinearLayout>

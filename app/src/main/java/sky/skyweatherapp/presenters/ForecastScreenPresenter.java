@@ -7,7 +7,7 @@ import sky.skyweatherapp.datamodel.ForecastModel;
 import sky.skyweatherapp.view.ForecastView;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class ForecastScreenPresenter implements ForecastView.DataRetrievedCallback{
     private final ForecastView forecastView;

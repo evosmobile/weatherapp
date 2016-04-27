@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class FavouriteCitiesRetrieverTests {
 
@@ -19,7 +19,7 @@ public class FavouriteCitiesRetrieverTests {
 
         CapturingFavouriteCitiesRetriever capturingFavouriteCitiesRetriever = new CapturingFavouriteCitiesRetriever();
 
-        MainScreenDataModel model = new MainScreenDataModel(null, capturingFavouriteCitiesRetriever, null, null);
+        MainScreenDataModel model = new MainScreenDataModel(null, capturingFavouriteCitiesRetriever, null);
 
         model.addFavourite(new CityData(1,"Name","Country"));
 

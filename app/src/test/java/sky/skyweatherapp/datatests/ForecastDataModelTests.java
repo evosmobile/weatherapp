@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class ForecastDataModelTests {
 

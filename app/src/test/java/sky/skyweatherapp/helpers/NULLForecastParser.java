@@ -7,7 +7,7 @@ import sky.skyweatherapp.datamodel.ForecastItem;
 import sky.skyweatherapp.datamodel.ForecastParser;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class NULLForecastParser implements ForecastParser {
     @Override

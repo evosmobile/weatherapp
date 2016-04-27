@@ -1,43 +1,39 @@
 package sky.skyweatherapp.datamodel;
 
+import android.util.Log;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import sky.skyweatherapp.helpers.FavouriteCitiesRetriever;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class MainScreenDataModel {
 
 
+    private static final String TAG = "MainDataModel";
     private final String apiKey;
     private final FavouriteCitiesRetriever favouriteCitiesRetriever;
     private final CityDataParser cityDataParser;
-    private final CurrentWeatherRetriever currentWeatherRetriever;
 
-    private final String API_ForecastRetrieve = "http://api.openweathermap.org/data/2.5/forecast?id=%d&appid=%s";
     private List<CityData> favourites = new ArrayList<>();
+    private String countryUrl;
 
 
-    public MainScreenDataModel(String apiKey, FavouriteCitiesRetriever favouriteCitiesRetriever, CityDataParser cityDataParser, CurrentWeatherRetriever currentWeatherRetriever) {
+    public MainScreenDataModel(String apiKey, FavouriteCitiesRetriever favouriteCitiesRetriever, CityDataParser cityDataParser) {
         this.apiKey = apiKey;
         this.favouriteCitiesRetriever = favouriteCitiesRetriever;
         this.cityDataParser = cityDataParser;
-        this.currentWeatherRetriever = currentWeatherRetriever;
     }
 
     public List<CityData> parseCitySearchResponse(String cityData) throws Exception {
         return cityDataParser.parseCitySearchResponse(cityData);
     }
 
-    public void retrieveForecast(long cityId) {
-
-        String retrieveUrl = String.format(API_ForecastRetrieve, cityId, apiKey);
-
-        String response = currentWeatherRetriever.retrieve(retrieveUrl);
-
-    }
 
     public void retrieveFavourites() {
         favourites = favouriteCitiesRetriever.retrieveFavourites();
@@ -59,5 +55,15 @@ public class MainScreenDataModel {
             }
         }
         favouriteCitiesRetriever.saveFavourites(favourites);
+    }
+
+    public String getCountryUrl(String query) {
+        String safeQuery = null;
+        try {
+            safeQuery = URLEncoder.encode(query,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "getCountryUrl:"+e.toString() );
+        }
+        return String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=%s&mode=json",safeQuery,apiKey);
     }
 }

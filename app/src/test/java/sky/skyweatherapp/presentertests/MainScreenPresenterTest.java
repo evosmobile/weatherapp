@@ -8,13 +8,12 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
-import sky.skyweatherapp.datatests.TestData;
+import sky.skyweatherapp.helpers.TestData;
 import sky.skyweatherapp.helpers.CannedFavouriteCities;
 import sky.skyweatherapp.helpers.CapturingFavouriteCitiesRetriever;
 import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullFavouriteCitiesRetriever;
-import sky.skyweatherapp.helpers.NullCurrentWeatherRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
 import sky.skyweatherapp.view.MainScreenView;
 
@@ -22,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class MainScreenPresenterTest {
 
@@ -32,7 +31,7 @@ public class MainScreenPresenterTest {
         CapturingInvokableMainScreenView capturingMainView = new CapturingInvokableMainScreenView();
 
         CannedFavouriteCities cannedFavouriteCities = new CannedFavouriteCities();
-        MainScreenDataModel model = new MainScreenDataModel(null, cannedFavouriteCities, new NullCityDataParser(), new NullCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, cannedFavouriteCities, new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
 
@@ -44,7 +43,7 @@ public class MainScreenPresenterTest {
         CapturingInvokableMainScreenView capturingMainView = new CapturingInvokableMainScreenView();
 
         EmptyFavouriteCities emptyFavouriteCities = new EmptyFavouriteCities();
-        MainScreenDataModel model = new MainScreenDataModel(null, emptyFavouriteCities, new NullCityDataParser(), new NullCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, emptyFavouriteCities, new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
 
@@ -56,7 +55,7 @@ public class MainScreenPresenterTest {
     public void whenACitySearchHasBeenPerformed_thePresenterIsNotified_andSetsTheListOfMatchesTheView() {
 
         CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
-        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(),new JSONCityDataParser(),new NullCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(),new JSONCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
 
@@ -70,7 +69,7 @@ public class MainScreenPresenterTest {
     public void whenACitySearchResultHasBeenSelected_thePresenterIsNotified_andTheModelStoresItInItsListOfFavourites() {
 
         CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
-        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser(), new NullCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView,model);
 
@@ -89,7 +88,7 @@ public class MainScreenPresenterTest {
     @Test
     public void whenACitySearchResultHasBeenSelected_thePresenterIsNotified_andItUpdatesTheListOnTheMainView() {
         CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
-        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser(), new NullCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView,model);
 
@@ -111,7 +110,7 @@ public class MainScreenPresenterTest {
 
         CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
         CapturingFavouriteCitiesRetriever favouriteCitiesRetriever = new CapturingFavouriteCitiesRetriever();
-        MainScreenDataModel model = new MainScreenDataModel(null, favouriteCitiesRetriever, new NullCityDataParser(), new NullCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, favouriteCitiesRetriever, new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
 
@@ -159,6 +158,7 @@ public class MainScreenPresenterTest {
         public void displayNewFavouriteMessage() {
 
         }
+
 
         public void invokeCitySelectedCallback(CityData cityData) {
             capturedCallback.newFavouriteCitySelected(cityData);

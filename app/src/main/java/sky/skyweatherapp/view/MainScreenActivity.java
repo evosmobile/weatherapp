@@ -47,7 +47,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
         favouritesList.setAdapter(favouritesListAdapter);
 
 
-        MainScreenDataModel model = new MainScreenDataModel(apiKey, new SharedPreferencesFavouritesRetriever(this), new JSONCityDataParser(), new JSONCurrentWeatherRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(apiKey, new SharedPreferencesFavouritesRetriever(this), new JSONCityDataParser());
 
         MainScreenPresenter mainScreenPresenter = new MainScreenPresenter(this, model);
 
@@ -80,7 +80,6 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
 
         findViewById(R.id.main_nofavourites).setVisibility(View.VISIBLE);
 
-      //  Toast.makeText(this, "No cities selected", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -102,6 +101,7 @@ public class MainScreenActivity extends FragmentActivity implements MainScreenVi
     public void displayNewFavouriteMessage() {
         Toast.makeText(this, R.string.new_favourite_message, Toast.LENGTH_SHORT).show();
     }
+
 
     public PresenterCallback getPresenterCallback() {
         return presenterCallback;

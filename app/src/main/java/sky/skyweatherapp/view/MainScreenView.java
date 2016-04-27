@@ -6,7 +6,7 @@ import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public interface MainScreenView {
     void setFavourites(List<CityData> cityData);
@@ -23,5 +23,6 @@ public interface MainScreenView {
         void cityDataRetrieved(String response);
         void newFavouriteCitySelected(CityData cityData);
         void deleteFavourite(CityData cityData);
+        String getSearchUrl(String query);
     }
 }

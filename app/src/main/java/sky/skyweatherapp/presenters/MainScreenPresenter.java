@@ -9,7 +9,7 @@ import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.view.MainScreenView;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     private final MainScreenView mainScreenView;
@@ -59,5 +59,10 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     public void deleteFavourite(CityData cityData) {
         model.deleteFavourite(cityData);
         checkFavourites();
+    }
+
+    @Override
+    public String getSearchUrl(String query) {
+       return model.getCountryUrl(query);
     }
 }

@@ -6,7 +6,7 @@ import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.CityDataParser;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class NullCityDataParser implements CityDataParser {
     @Override

@@ -1,7 +1,7 @@
 package sky.skyweatherapp.datamodel;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class ForecastItem {
 

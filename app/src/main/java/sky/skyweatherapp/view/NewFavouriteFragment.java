@@ -1,19 +1,13 @@
 package sky.skyweatherapp.view;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,8 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +25,7 @@ import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.services.NetworkFetcherService;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class NewFavouriteFragment extends DialogFragment implements NetworkFetcherService.NetworkCallCompleteCallback {
 
@@ -79,10 +71,11 @@ public class NewFavouriteFragment extends DialogFragment implements NetworkFetch
                 InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-
-                //TODO: Refactor
                 String cityName = searchCriteria.getText().toString();
-                String url = String.format("http://api.openweathermap.org/data/2.5/find?q=%s&type=like&sort=population&cnt=50&appid=cf9d82cc9699db27242567f0cefbfce5&mode=json", cityName);
+
+                MainScreenActivity mainScreenActivity = (MainScreenActivity) getActivity();
+
+                String url = mainScreenActivity.getPresenterCallback().getSearchUrl(cityName);
 
                 Intent i = new Intent(getContext(), NetworkFetcherService.class);
                 i.putExtra("url", url);

@@ -6,7 +6,7 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.CityData;
 
 /**
- * Created by S on 26/04/2016.
+ * Created by SMcD on 26/04/2016.
  */
 public class NullFavouriteCitiesRetriever implements FavouriteCitiesRetriever {
     @Override

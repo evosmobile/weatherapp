@@ -16,7 +16,7 @@ import java.net.URL;
 import sky.skyweatherapp.R;
 
 /**
- * Created by S on 26/04/2016.
+ * Created by SMcD on 26/04/2016.
  */
 public class NetworkFetcherService extends IntentService {
 

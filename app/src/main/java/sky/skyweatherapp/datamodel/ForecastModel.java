@@ -3,7 +3,7 @@ package sky.skyweatherapp.datamodel;
 import java.util.List;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class ForecastModel {
     private String apiKey;

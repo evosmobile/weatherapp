@@ -6,7 +6,7 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.CityData;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public class CapturingFavouriteCitiesRetriever implements FavouriteCitiesRetriever {
     public Boolean updateCalled = false;

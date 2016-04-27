@@ -5,7 +5,7 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.ForecastItem;
 
 /**
- * Created by mcdons20 on 26/04/16.
+ * Created by SMcDMcD on 26/04/16.
  */
 public interface ForecastView {
     void retrieveForecast(String url);

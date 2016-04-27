@@ -1,18 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
-    <Button
+        <TextView
+            style="@style/main_title"
+            android:text="@string/weather_app"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_favouritesList"
+            style="@style/main_dark">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/main_nofavourites"
+        style="@style/main_no_favourites"
+        android:text="@string/no_favourites"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="invisible"
+        />
+
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNewFavouriteButton"
         android:layout_gravity="right|bottom"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"/>
+        android:src="@drawable/ic_add_white_24dp"
+        app:rippleColor="#FF0"
+        app:elevation="25dp"
+       />
 
 
 </FrameLayout>

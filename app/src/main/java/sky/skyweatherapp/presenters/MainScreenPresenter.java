@@ -5,30 +5,36 @@ import android.util.Log;
 import java.util.List;
 
 import sky.skyweatherapp.datamodel.CityData;
-import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.view.MainScreenView;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class MainScreenPresenter implements MainScreenView.PresenterCallback{
     private final MainScreenView mainScreenView;
-    private final DataModel model;
+    private final MainScreenDataModel model;
     private String TAG = "MainScreenPresenter";
 
-    public MainScreenPresenter(MainScreenView mainScreenView, DataModel model) {
+    public MainScreenPresenter(MainScreenView mainScreenView, MainScreenDataModel model) {
         this.mainScreenView = mainScreenView;
         this.model = model;
 
-
         mainScreenView.setPresenterCallback(this);
 
-        List<CityData> favouriteCities = model.retrieveFavourites();
-        if (favouriteCities.size() == 0) {
+        model.retrieveFavourites();
+
+        checkFavourites();
+    }
+
+    private void checkFavourites() {
+        mainScreenView.setFavourites(model.getFavourites());
+
+        if (model.getFavourites().size() == 0) {
             mainScreenView.displayNoDataMessage();
-        } else {
-            mainScreenView.setFavourites(favouriteCities);
         }
+
+
     }
 
     @Override
@@ -40,5 +46,23 @@ public class MainScreenPresenter implements MainScreenView.PresenterCallback{
         catch (Exception e) {
             Log.e(TAG, "cityDataRetrieved: " + e.toString());
         }
+    }
+
+    @Override
+    public void newFavouriteCitySelected(CityData cityData) {
+        model.addFavourite(cityData);
+        checkFavourites();
+        mainScreenView.displayNewFavouriteMessage();
+    }
+
+    @Override
+    public void deleteFavourite(CityData cityData) {
+        model.deleteFavourite(cityData);
+        checkFavourites();
+    }
+
+    @Override
+    public String getSearchUrl(String query) {
+       return model.getCountryUrl(query);
     }
 }

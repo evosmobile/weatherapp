@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.ForecastActivity"
+            android:theme="@style/theme_notitle"/>
+
         <service android:name=".services.NetworkFetcherService"/>
     </application>
 

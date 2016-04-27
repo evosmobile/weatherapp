@@ -6,9 +6,13 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.CityData;
 
 /**
- * Created by SMcD on 25/04/2016.
+ * Created by SMcDMcD on 26/04/16.
  */
-public class EmptyFavouriteCities implements FavouriteCitiesRetriever{
+public class CapturingFavouriteCitiesRetriever implements FavouriteCitiesRetriever {
+    public Boolean updateCalled = false;
+    public List<CityData> capturedFavourites;
+
+
     @Override
     public List<CityData> retrieveFavourites() {
         return new ArrayList<>();
@@ -16,6 +20,9 @@ public class EmptyFavouriteCities implements FavouriteCitiesRetriever{
 
     @Override
     public void saveFavourites(List<CityData> favourites) {
-
+        this.capturedFavourites = favourites;
+        updateCalled = true;
     }
+
+
 }

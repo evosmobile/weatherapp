@@ -8,19 +8,19 @@ import java.util.List;
 
 import sky.skyweatherapp.datamodel.CityData;
 import sky.skyweatherapp.datamodel.CityDataParser;
-import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
-import sky.skyweatherapp.helpers.NullForecastRetriever;
+import sky.skyweatherapp.helpers.TestData;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class JSONCityDataParserTests {
 
-    private DataModel model;
+    private MainScreenDataModel model;
     private List<CityData> cityResults;
 
     @Before
@@ -28,7 +28,7 @@ public class JSONCityDataParserTests {
 
         CityDataParser cityDataParser = new JSONCityDataParser();
 
-        model = new DataModel(null, null, cityDataParser, new NullForecastRetriever());
+        model = new MainScreenDataModel(null, null, cityDataParser);
         cityResults = model.parseCitySearchResponse(TestData.sampleCityData);
     }
 

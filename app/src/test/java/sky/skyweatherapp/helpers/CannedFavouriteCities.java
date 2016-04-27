@@ -6,7 +6,7 @@ import java.util.List;
 import sky.skyweatherapp.datamodel.CityData;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class CannedFavouriteCities implements FavouriteCitiesRetriever{
 
@@ -20,5 +20,10 @@ public class CannedFavouriteCities implements FavouriteCitiesRetriever{
         cityData.add(new CityData(3,"Calgary","CA"));
 
         return cityData;
+    }
+
+    @Override
+    public void saveFavourites(List<CityData> favourites) {
+
     }
 }

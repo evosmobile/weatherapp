@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sky.skyweatherapp.datamodel.CityData;
-import sky.skyweatherapp.datamodel.DataModel;
+import sky.skyweatherapp.datamodel.MainScreenDataModel;
 import sky.skyweatherapp.datamodel.JSONCityDataParser;
-import sky.skyweatherapp.datatests.TestData;
+import sky.skyweatherapp.helpers.TestData;
 import sky.skyweatherapp.helpers.CannedFavouriteCities;
+import sky.skyweatherapp.helpers.CapturingFavouriteCitiesRetriever;
 import sky.skyweatherapp.helpers.EmptyFavouriteCities;
 import sky.skyweatherapp.helpers.NullCityDataParser;
 import sky.skyweatherapp.helpers.NullFavouriteCitiesRetriever;
-import sky.skyweatherapp.helpers.NullForecastRetriever;
 import sky.skyweatherapp.presenters.MainScreenPresenter;
 import sky.skyweatherapp.view.MainScreenView;
 
@@ -21,17 +21,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
- * Created by S on 25/04/2016.
+ * Created by SMcD on 25/04/2016.
  */
 public class MainScreenPresenterTest {
 
     @Test
     public void givenADataModelIsProvided_thePresenterSetsUpTheScreenAsExpected() {
 
-        CapturingMainScreenView capturingMainView = new CapturingMainScreenView();
+        CapturingInvokableMainScreenView capturingMainView = new CapturingInvokableMainScreenView();
 
         CannedFavouriteCities cannedFavouriteCities = new CannedFavouriteCities();
-        DataModel model = new DataModel(null, cannedFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, cannedFavouriteCities, new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
 
@@ -40,10 +40,10 @@ public class MainScreenPresenterTest {
 
     @Test
     public void givenADataModelIsProvidedWithNoFavourites_ThenViewIsInstructedToDisplayTheNoFavouritesMessage() {
-        CapturingMainScreenView capturingMainView = new CapturingMainScreenView();
+        CapturingInvokableMainScreenView capturingMainView = new CapturingInvokableMainScreenView();
 
         EmptyFavouriteCities emptyFavouriteCities = new EmptyFavouriteCities();
-        DataModel model = new DataModel(null, emptyFavouriteCities, new NullCityDataParser(), new NullForecastRetriever());
+        MainScreenDataModel model = new MainScreenDataModel(null, emptyFavouriteCities, new NullCityDataParser());
 
         MainScreenPresenter presenter = new MainScreenPresenter(capturingMainView, model);
 
@@ -54,19 +54,81 @@ public class MainScreenPresenterTest {
     @Test
     public void whenACitySearchHasBeenPerformed_thePresenterIsNotified_andSetsTheListOfMatchesTheView() {
 
-        CapturingMainScreenView capturingMainScreenView = new CapturingMainScreenView();
-        DataModel model = new DataModel(null, new NullFavouriteCitiesRetriever(),new JSONCityDataParser(),new NullForecastRetriever());
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(),new JSONCityDataParser());
 
-        MainScreenPresenter presenter = new MainScreenPresenter(capturingMainScreenView, model);
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
 
-        capturingMainScreenView.capturedCallback.cityDataRetrieved(TestData.sampleCityData);
+        capturingInvokableMainScreenView.capturedCallback.cityDataRetrieved(TestData.sampleCityData);
 
-        assertThat(capturingMainScreenView.capturedMatchedCities.size(), is(4));
+        assertThat(capturingInvokableMainScreenView.capturedMatchedCities.size(), is(4));
+
+    }
+
+    @Test
+    public void whenACitySearchResultHasBeenSelected_thePresenterIsNotified_andTheModelStoresItInItsListOfFavourites() {
+
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView,model);
+
+        CityData expectedData = new CityData(1234, "CityName", "Country");
+
+
+        capturingInvokableMainScreenView.invokeCitySelectedCallback(expectedData);
+
+        assertThat(model.getFavourites().size(), is(1));
+        assertThat(model.getFavourites().get(0).getId(),is(1234L));
+        assertThat(model.getFavourites().get(0).getName(),is("CityName"));
+        assertThat(model.getFavourites().get(0).getCountry(),is("Country"));
+    }
+
+
+    @Test
+    public void whenACitySearchResultHasBeenSelected_thePresenterIsNotified_andItUpdatesTheListOnTheMainView() {
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        MainScreenDataModel model = new MainScreenDataModel(null, new NullFavouriteCitiesRetriever(), new NullCityDataParser());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView,model);
+
+        CityData expectedData = new CityData(1234, "CityName", "Country");
+
+
+        capturingInvokableMainScreenView.invokeCitySelectedCallback(expectedData);
+
+        assertThat(capturingInvokableMainScreenView.capturedCities.size(),is(1));
+
+        CityData capturedCity = capturingInvokableMainScreenView.capturedCities.get(0);
+        assertThat(capturedCity.getCountry(), is("Country"));
+        assertThat(capturedCity.getName(),is("CityName"));
+        assertThat(capturedCity.getId(),is(1234L));
+    }
+
+    @Test
+    public void whenTheViewTellsTheModelToRemoveAFavourite_theModeInformsTheFavouriteRetriever() {
+
+        CapturingInvokableMainScreenView capturingInvokableMainScreenView = new CapturingInvokableMainScreenView();
+        CapturingFavouriteCitiesRetriever favouriteCitiesRetriever = new CapturingFavouriteCitiesRetriever();
+        MainScreenDataModel model = new MainScreenDataModel(null, favouriteCitiesRetriever, new NullCityDataParser());
+
+        MainScreenPresenter presenter = new MainScreenPresenter(capturingInvokableMainScreenView, model);
+
+        CityData cityData = new CityData(1,"City", "Country");
+
+        model.addFavourite(cityData);
+
+        assertThat(model.getFavourites().size(),is(1));
+
+        capturingInvokableMainScreenView.invokeFavouriteDeleted(cityData);
+
+        assertThat(model.getFavourites().size(),is(0));
+        assertThat(favouriteCitiesRetriever.capturedFavourites.size(), is(0));
 
     }
 
 
-    private class CapturingMainScreenView implements MainScreenView {
+    private class CapturingInvokableMainScreenView implements MainScreenView {
         public List<CityData> capturedCities = new ArrayList<>();
         public boolean capturedNoDataMessageDisplayed = false;
         public PresenterCallback capturedCallback = null;
@@ -92,6 +154,20 @@ public class MainScreenPresenterTest {
             capturedMatchedCities = cityData;
         }
 
+        @Override
+        public void displayNewFavouriteMessage() {
+
+        }
+
+
+        public void invokeCitySelectedCallback(CityData cityData) {
+            capturedCallback.newFavouriteCitySelected(cityData);
+
+        }
+
+        public void invokeFavouriteDeleted(CityData cityData) {
+            capturedCallback.deleteFavourite(cityData);
+        }
     }
 
 }

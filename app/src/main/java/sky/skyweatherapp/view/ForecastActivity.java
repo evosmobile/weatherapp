@@ -71,18 +71,18 @@ public class ForecastActivity extends AppCompatActivity implements ForecastView,
 
         forecastDataAdapter = new ForecastDataAdapter();
 
-        forecastList = (RecyclerView)findViewById(R.id.forecast_list);
+        forecastList = (RecyclerView) findViewById(R.id.forecast_list);
         forecastList.setLayoutManager(new LinearLayoutManager(this));
         forecastList.setAdapter(forecastDataAdapter);
 
 
-
         Intent i = getIntent();
-        this.cityData = new CityData(i.getLongExtra("id", -1), i.getStringExtra("city"), i.getStringExtra("country"));
+        this.cityData = new CityData(i.getLongExtra("id", -1), i.getStringExtra("name"), i.getStringExtra("country"));
 
         forecastModel = new ForecastModel(getString(R.string.api_key), cityData.getId(), new JSONForecastParser());
-
         presenter = new ForecastScreenPresenter(this, forecastModel);
+
+        ((TextView)findViewById(R.id.forecast_place)).setText(cityData.getName());
 
 
     }
@@ -174,8 +174,8 @@ public class ForecastActivity extends AppCompatActivity implements ForecastView,
 
             date.setText(dateFormat.format(forecastItem.getDatetime() * 1000));
             time.setText(timeFormat.format(forecastItem.getDatetime() * 1000));
-            direction.setText(String.format("%.2f", forecastItem.getDirection()));
-            speed.setText(String.format("%.2f", forecastItem.getSpeed()));
+            direction.setText(getCardinalString(forecastItem.getDirection()));
+            speed.setText(String.format("%.2f m/s", forecastItem.getSpeed()));
 
             //Hide date except on first forecast of day
             if (position!=0 && !(time.getText().equals("01:00"))) {
@@ -186,5 +186,43 @@ public class ForecastActivity extends AppCompatActivity implements ForecastView,
             }
 
         }
+    }
+
+    private String getCardinalString(double direction) {
+
+        if (direction>=347.75 || direction<11.25) {
+            return "N";
+        } else if (direction>=11.25 && direction<33.75) {
+            return "NNE";
+        } else if (direction>=33.75 && direction<56.25) {
+            return "NE";
+        }else if (direction>=56.25 && direction<78.75) {
+            return "ENE";
+        }else if (direction>=78.75 && direction<101.25) {
+            return "N";
+        }else if (direction>=101.25 && direction<123.75) {
+            return "ESE";
+        }else if (direction>=123.75 && direction<146.25) {
+            return "SE";
+        }else if (direction>=146.25 && direction<168.75) {
+            return "SSE";
+        }else if (direction>=168.75 && direction<191.25) {
+            return "S";
+        }else if (direction>=191.25 && direction<213.75) {
+            return "SSW";
+        }else if (direction>=213.75 && direction<236.25) {
+            return "SW";
+        }else if (direction>=236.25 && direction<258.75) {
+            return "WSW";
+        }else if (direction>=258.75 && direction<281.25) {
+            return "W";
+        }else if (direction>=281.25 && direction<303.75) {
+            return "WNW";
+        }else if (direction>=303.75 && direction<326.25) {
+            return "NW";
+        }else if (direction>=326.25 && direction<347.75) {
+            return "NNW";
+        }
+        return "UNK";
     }
 }

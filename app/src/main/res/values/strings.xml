@@ -13,4 +13,5 @@
     <string name="no_favourites">No favourites have been selected.\nAdd favourites by clicking the button below.</string>
     <string name="dialog_title">Search places</string>
     <string name="new_favourite_message">New favourite place added!</string>
+    <string name="forecast_title">5 day forecast for</string>
 </resources>
